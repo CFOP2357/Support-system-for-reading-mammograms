@@ -1,9 +1,9 @@
 from tkinter import *
 
-root = Tk()
+root = Tk() #construye la 'ventana'
 
-myLabel = Label(root, text="Hello World")
+myLabel = Label(root, text="Hello World") #construye un label
 
-myLabel.pack();
+myLabel.pack(); #agrega label a la ventana
 
-root.mainloop();
+root.mainloop(); #empieza 
