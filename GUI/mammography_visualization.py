@@ -36,8 +36,18 @@ def dcm_to_jpg(fpath):
   return jpg_fpath
 
 def clickOnOpen():
+  #open image
   root.filename = filedialog.askopenfilename(title="Selecciona un archivo", filetypes=(("DICOM", "*.dcm"), ("", "")))
-  img = ImageTk.PhotoImage(Image.open(dcm_to_jpg(root.filename)))
+  img = Image.open(dcm_to_jpg(root.filename))
+
+  #resize image
+  fixed_height = float(600)
+  height_percent = (fixed_height / float(img.size[1]))
+  width_size = int((float(img.size[0]) * float(height_percent)))
+  img = img.resize((int(width_size), int(fixed_height)))
+  
+  #show image
+  img = ImageTk.PhotoImage(img)
   currentImage.configure(image = img)
   currentImage.image = img
   #my_image = 
