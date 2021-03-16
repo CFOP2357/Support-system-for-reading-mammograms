@@ -44,16 +44,19 @@ def clickOnOpen():
 
   currentImage.configure(image = img)
   currentImage.image = img
-  #my_image = 
 
+#init window
 root = Tk()
 root.title("visualización de mamografias")
 
+#add Buttons
 openButton = Button(root, text = "Abrir", command=clickOnOpen)
 openButton.grid(row = 0, column = 0);
 
+#init img
 img = ImageTk.PhotoImage(Image.open("emptyIMG.jpg"))
 currentImage = Label(root, image = img)
 currentImage.grid(row = 1, column = 0)
 
+#start window
 root.mainloop();
