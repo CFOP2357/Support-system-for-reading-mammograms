@@ -11,7 +11,9 @@ __status__ = "Production"
 import os
 
 import numpy as np
-from PIL import Image
+from tkinter import *
+from tkinter import filedialog
+from PIL import ImageTk,Image
 from pydicom import dcmread
 
 def pixel_array_to_PIL_img_gray(pixel_array):
@@ -32,3 +34,22 @@ def dcm_to_jpg(fpath):
   im_out.save(jpg_fpath)  # Guargar imagen en formato jpg
 
   return jpg_fpath
+
+def clickOnOpen():
+  root.filename = filedialog.askopenfilename(title="Selecciona un archivo", filetypes=(("", "*.jpg"), ("todos", "*.*")))
+  img = ImageTk.PhotoImage(Image.open(root.filename))
+  currentImage.configure(image = img)
+  currentImage.image = img
+  #my_image = 
+
+root = Tk()
+root.title("visualización de mamografias");
+
+openButton = Button(root, text = "Abrir", command=clickOnOpen)
+openButton.grid(row = 0, column = 0);
+
+img = ImageTk.PhotoImage(Image.open("emptyIMG.jpg"))
+currentImage = Label(root, image = img)
+currentImage.grid(row = 1, column = 0)
+
+root.mainloop();
