@@ -36,14 +36,14 @@ def dcm_to_jpg(fpath):
   return jpg_fpath
 
 def clickOnOpen():
-  root.filename = filedialog.askopenfilename(title="Selecciona un archivo", filetypes=(("", "*.jpg"), ("todos", "*.*")))
-  img = ImageTk.PhotoImage(Image.open(root.filename))
+  root.filename = filedialog.askopenfilename(title="Selecciona un archivo", filetypes=(("DICOM", "*.dcm"), ("", "")))
+  img = ImageTk.PhotoImage(Image.open(dcm_to_jpg(root.filename)))
   currentImage.configure(image = img)
   currentImage.image = img
   #my_image = 
 
 root = Tk()
-root.title("visualización de mamografias");
+root.title("visualización de mamografias")
 
 openButton = Button(root, text = "Abrir", command=clickOnOpen)
 openButton.grid(row = 0, column = 0);
