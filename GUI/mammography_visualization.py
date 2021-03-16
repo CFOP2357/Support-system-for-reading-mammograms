@@ -23,21 +23,14 @@ def pixel_array_to_PIL_img_gray(pixel_array):
   pixel_array *= 255
   return Image.fromarray(pixel_array.astype("uint8"))
   
-def dcm_to_jpg(fpath):
+def dcm_to_PIL_image_gray(fpath):
   ds = dcmread(fpath)
 
-  im_out = pixel_array_to_PIL_img_gray(ds.pixel_array)  # Aun se ve borroso
-  
-  # Get filename with .jpg extension instead of .dcm
-  jpg_fpath = os.path.splitext(fpath)[0] + ".jpg" 
-
-  im_out.save(jpg_fpath)  # Guargar imagen en formato jpg
-
-  return jpg_fpath
+  return pixel_array_to_PIL_img_gray(ds.pixel_array)  # Aun se ve borroso
 
 def clickOnOpen():
   root.filename = filedialog.askopenfilename(title="Selecciona un archivo", filetypes=(("DICOM", "*.dcm"), ("", "")))
-  img = ImageTk.PhotoImage(Image.open(dcm_to_jpg(root.filename)))
+  img = ImageTk.PhotoImage(dcm_to_PIL_image_gray(root.filename))
   currentImage.configure(image = img)
   currentImage.image = img
   #my_image = 
