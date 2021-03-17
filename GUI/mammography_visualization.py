@@ -1,4 +1,3 @@
-
 __author__ = "Hernandez Hernandez Bernado and Salazar Alanís Víctor Yoguel"
 # __copyright__ = ""
 __credits__ = ["Hernandez Hernandez Bernado", "Salazar Alanís Víctor Yoguel"]
@@ -22,10 +21,11 @@ def pixel_array_to_gray(pixel_array):
   """Return a uint8 pixel array representation of 
   the original pixel array with values from 0 to 255
   """
-  pixel_array = pixel_array.astype("float")
+  pixel_array = pixel_array.astype("uint32")
   pixel_array -= np.amin(pixel_array)
-  pixel_array /= np.amax(pixel_array)
+  max_val = np.amax(pixel_array)
   pixel_array *= 255
+  pixel_array //= max_val
   return Image.fromarray(pixel_array.astype("uint8"))
 
   
@@ -72,3 +72,4 @@ if __name__ == "__main__":
 
   # Start window
   root.mainloop();
+
