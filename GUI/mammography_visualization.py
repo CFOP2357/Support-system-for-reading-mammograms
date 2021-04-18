@@ -27,16 +27,14 @@ def pixel_array_to_gray(pixel_array):
   pixel_array *= 255
   pixel_array //= max_val
   return Image.fromarray(pixel_array.astype("uint8"))
-
   
 def dcm_to_PIL_image_gray(fpath):
   """Read a DICOM file and return it as a gray scale PIL image"""
   ds = dcmread(fpath)
   return pixel_array_to_gray(ds.pixel_array)  # Aun se ve borroso
 
-def openMiniImg(fpath):
+def open_mini_image(img):
   """open and resize img of the left"""
-  img = dcm_to_PIL_image_gray(fpath)
   # Resize image
   if img.size[0] > 500: #adjust height
     fixed_height = float(500)
@@ -53,14 +51,20 @@ def openMiniImg(fpath):
   miniImg.configure(image = img)
   miniImg.image = img
 
-def openZoomImg(fpath):
+def change_zoom_image(img):
   """open and cut img of the right"""
-  img = dcm_to_PIL_image_gray(fpath)
   img = img.crop([0,0,1200,700])
   # Show image
   img = ImageTk.PhotoImage(img)
   zoomImg.configure(image = img)
   zoomImg.image = img
+
+def open_image(fpath):
+  """open an image"""
+  global originalImg
+  originalImg = dcm_to_PIL_image_gray(fpath)
+  change_zoom_image(originalImg)
+  open_mini_image(originalImg)
 
 
 def click_on_open():
@@ -71,8 +75,6 @@ def click_on_open():
   root.filename = filedialog.askopenfilename(title="Selecciona un archivo", filetypes=(("DICOM", "*.dcm"), ("", "")))
   originalImg = dcm_to_PIL_image_gray(root.filename)
   openMiniImg(root.filename)
-
-  
 
 def fullScreen():
   """screen in full size"""
@@ -98,8 +100,7 @@ if __name__ == "__main__":
   miniImg.grid(row = 1, column = 0)
   zoomImg = Label(root, image = originalImg)
   zoomImg.grid(row = 1, column = 2)
-  openMiniImg('example.dcm')
-  openZoomImg('example.dcm')
+  open_image('example.dcm')
   # Start window
   root.mainloop();
 
