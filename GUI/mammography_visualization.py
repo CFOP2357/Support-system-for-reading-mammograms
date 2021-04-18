@@ -115,6 +115,7 @@ if __name__ == "__main__":
   zoomImg = Label(root, image = leftImg)
   zoomImg.grid(row = 1, column = 2)
   open_image('example.dcm')
+  leftSide.create_rectangle(0, 0, 100, 40, outline="#05f")
 
   # Start window
   root.mainloop();
