@@ -31,13 +31,11 @@ def pixel_array_to_gray(pixel_array):
   
 def dcm_to_PIL_image_gray(fpath):
   """Read a DICOM file and return it as a gray scale PIL image"""
-  
   ds = dcmread(fpath)
-
   return pixel_array_to_gray(ds.pixel_array)  # Aun se ve borroso
 
 def openMiniImg(fpath):
-  """abre la imagen miniatura en la izquierda"""
+  """open and resize img of the left"""
   img = dcm_to_PIL_image_gray(fpath)
   # Resize image
   if img.size[0] > 500: #adjust height
@@ -52,15 +50,26 @@ def openMiniImg(fpath):
     img = img.resize((int(fixed_width), int(height_size)))
   # Show image
   img = ImageTk.PhotoImage(img)
-  currentImage.configure(image = img)
-  currentImage.image = img
+  miniImg.configure(image = img)
+  miniImg.image = img
 
+def openZoomImg(fpath):
+  """open and cut img of the right"""
+  img = dcm_to_PIL_image_gray(fpath)
+  img = img.crop([0,0,1200,700])
+  # Show image
+  img = ImageTk.PhotoImage(img)
+  zoomImg.configure(image = img)
+  zoomImg.image = img
 
 
 def click_on_open():
   """Select a DICOM file and show it on screen using the PIL packege"""
+  global root
+  global originalImg
   # Open image
   root.filename = filedialog.askopenfilename(title="Selecciona un archivo", filetypes=(("DICOM", "*.dcm"), ("", "")))
+  originalImg = dcm_to_PIL_image_gray(root.filename)
   openMiniImg(root.filename)
 
   
@@ -80,17 +89,17 @@ if __name__ == "__main__":
   root = Tk()
   root.title("visualización de mamografias")
   fullScreen()
-
-  # Add Buttonsñññ
+  # Add Buttons
   openButton = Button(root, text = "Abrir", command=click_on_open)
   openButton.grid(row = 0, column = 0)
-
   # Init img
-  img = ImageTk.PhotoImage(Image.open("emptyIMG.jpg"))
-  currentImage = Label(root, image = img)
-  currentImage.grid(row = 1, column = 0)
+  originalImg = ImageTk.PhotoImage(Image.open("emptyIMG.jpg"))
+  miniImg = Label(root, image = originalImg)
+  miniImg.grid(row = 1, column = 0)
+  zoomImg = Label(root, image = originalImg)
+  zoomImg.grid(row = 1, column = 2)
   openMiniImg('example.dcm')
-
+  openZoomImg('example.dcm')
   # Start window
   root.mainloop();
 
