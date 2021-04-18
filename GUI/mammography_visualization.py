@@ -17,6 +17,10 @@ from tkinter import filedialog
 from PIL import ImageTk,Image
 from pydicom import dcmread
 
+#const
+width_right_image = 1200
+height_right_image = 700
+
 def pixel_array_to_gray(pixel_array):
   """Return a uint8 pixel array representation of 
   the original pixel array with values from 0 to 255
@@ -51,9 +55,9 @@ def open_mini_image(img):
   leftImg = ImageTk.PhotoImage(img)
   leftSide.create_image(0, 0, anchor=NW, image=leftImg)
 
-def change_zoom_image(img, to_select):
+def change_zoom_image(originalImg, to_select):
   """open and cut img of the right"""
-  img = img.crop(to_select)
+  img = originalImg.crop(to_select)
   # Show image
   img = ImageTk.PhotoImage(img)
   zoomImg.configure(image = img)
@@ -63,7 +67,7 @@ def open_image(fpath):
   """open an image"""
   global originalImg
   originalImg = dcm_to_PIL_image_gray(fpath)
-  change_zoom_image(originalImg, [0,0,1200,700])
+  change_zoom_image(originalImg, [0,0,width_right_image,height_right_image])
   open_mini_image(originalImg)
 
 
@@ -83,7 +87,15 @@ def fullScreen():
   #setting tkinter window size
   root.geometry("%dx%d" % (width, height))
   root.title("Geeeks For Geeks")
-  
+
+def callback(event):
+    global originalImg
+    change_zoom_image(originalImg, [
+          max([0, int(float(originalImg.size[0]*event.x)/float(leftImg.width())) - width_right_image/2]), 
+          max([0, int(float(originalImg.size[1]*event.y)/float(leftImg.height())) - height_right_image/2]), 
+          min([originalImg.size[0], int(float(originalImg.size[0]*event.x)/float(leftImg.width())) + width_right_image/2]), 
+          min([originalImg.size[1], int(float(originalImg.size[1]*event.y)/float(leftImg.height())) + height_right_image/2])
+    ])
   
 if __name__ == "__main__":
   # Init window
@@ -99,6 +111,7 @@ if __name__ == "__main__":
   leftSide.grid(row = 1, column = 0)
   leftImg = ImageTk.PhotoImage(originalImg)
   leftSide.create_image(0, 0, anchor=NW, image=leftImg)
+  leftSide.bind("<Button-1>", callback)
   zoomImg = Label(root, image = leftImg)
   zoomImg.grid(row = 1, column = 2)
   open_image('example.dcm')
