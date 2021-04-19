@@ -19,7 +19,7 @@ from pydicom import dcmread
 
 #const
 width_right_image = 1200
-height_right_image = 700
+height_right_image = 750
 
 def pixel_array_to_gray(pixel_array):
   """Return a uint8 pixel array representation of 
@@ -72,7 +72,7 @@ def click_on_open():
   open_image(root.filename)
 
 def show(x, y):
-  open_mini_image(originalImg)
+  leftSide.delete("rectangle")
   xsize = float(width_right_image*leftImg.width())/float(originalImg.size[0])
   ysize = float(height_right_image*leftImg.height())/float(originalImg.size[1])
   x = max(x, xsize/2)
@@ -86,12 +86,13 @@ def show(x, y):
       min([originalImg.size[1], int(float(originalImg.size[1]*y)/float(leftImg.height())) + height_right_image/2])
   ]
   change_zoom_image(originalImg, coord)
-  leftSide.create_rectangle(x-xsize/2, y-ysize/2, x+xsize/2, y+ysize/2, outline="#05f")
+  leftSide.create_rectangle(x-xsize/2, y-ysize/2, x+xsize/2, y+ysize/2, outline="#05f", tag = "rectangle")
 
 def open_image(fpath):
   """open an image"""
   global originalImg
   originalImg = dcm_to_PIL_image_gray(fpath)
+  open_mini_image(originalImg)
   show(float(34), float(28))
 
 def fullScreen():
