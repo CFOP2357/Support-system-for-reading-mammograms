@@ -63,14 +63,6 @@ def change_zoom_image(originalImg, to_select):
   zoomImg.configure(image = img)
   zoomImg.image = img
 
-def open_image(fpath):
-  """open an image"""
-  global originalImg
-  originalImg = dcm_to_PIL_image_gray(fpath)
-  change_zoom_image(originalImg, [0,0,width_right_image,height_right_image])
-  open_mini_image(originalImg)
-
-
 def click_on_open():
   """Select a DICOM file and show it on screen using the PIL packege"""
   global root
@@ -78,6 +70,29 @@ def click_on_open():
   # Open image
   root.filename = filedialog.askopenfilename(title="Selecciona un archivo", filetypes=(("DICOM", "*.dcm"), ("", "")))
   open_image(root.filename)
+
+def show(x, y):
+  open_mini_image(originalImg)
+  xsize = float(width_right_image*leftImg.width())/float(originalImg.size[0])
+  ysize = float(height_right_image*leftImg.height())/float(originalImg.size[1])
+  x = max(x, xsize/2)
+  y = max(y, ysize/2)
+  x = min(x, leftImg.width()-xsize/2)
+  y = min(y, leftImg.height()-ysize/2)
+  coord = [
+      max([0, int(float(originalImg.size[0]*x)/float(leftImg.width())) - width_right_image/2]),
+      max([0, int(float(originalImg.size[1]*y)/float(leftImg.height())) - height_right_image/2]), 
+      min([originalImg.size[0], int(float(originalImg.size[0]*x)/float(leftImg.width())) + width_right_image/2]), 
+      min([originalImg.size[1], int(float(originalImg.size[1]*y)/float(leftImg.height())) + height_right_image/2])
+  ]
+  change_zoom_image(originalImg, coord)
+  leftSide.create_rectangle(x-xsize/2, y-ysize/2, x+xsize/2, y+ysize/2, outline="#05f")
+
+def open_image(fpath):
+  """open an image"""
+  global originalImg
+  originalImg = dcm_to_PIL_image_gray(fpath)
+  show(float(34), float(28))
 
 def fullScreen():
   """screen in full size"""
@@ -90,12 +105,8 @@ def fullScreen():
 
 def callback(event):
     global originalImg
-    change_zoom_image(originalImg, [
-          max([0, int(float(originalImg.size[0]*event.x)/float(leftImg.width())) - width_right_image/2]), 
-          max([0, int(float(originalImg.size[1]*event.y)/float(leftImg.height())) - height_right_image/2]), 
-          min([originalImg.size[0], int(float(originalImg.size[0]*event.x)/float(leftImg.width())) + width_right_image/2]), 
-          min([originalImg.size[1], int(float(originalImg.size[1]*event.y)/float(leftImg.height())) + height_right_image/2])
-    ])
+    show(event.x, event.y)
+
   
 if __name__ == "__main__":
   # Init window
@@ -115,7 +126,6 @@ if __name__ == "__main__":
   zoomImg = Label(root, image = leftImg)
   zoomImg.grid(row = 1, column = 2)
   open_image('example.dcm')
-  leftSide.create_rectangle(0, 0, 100, 40, outline="#05f")
 
   # Start window
   root.mainloop();
