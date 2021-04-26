@@ -102,7 +102,6 @@ def fullScreen():
   height= root.winfo_screenheight()
   #setting tkinter window size
   root.geometry("%dx%d" % (width, height))
-  root.title("Geeeks For Geeks")
 
 def callback(event):
     global originalImg
