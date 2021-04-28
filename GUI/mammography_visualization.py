@@ -21,7 +21,7 @@ from pydicom import dcmread
 width_right_image = 1200
 height_right_image = 750
 
-def unsharp_mask(image, kernel_size=(5, 5), sigma=10000.0, amount=2.0, threshold=10000.0):
+def unsharp_mask(image, kernel_size=(5, 5), sigma=10000.0, amount=100.0, threshold=10000.0):
     """Return a sharpened version of the image, using an unsharp mask."""
     blurred = cv.GaussianBlur(image, kernel_size, sigma)
     sharpened = float(amount + 1) * image - float(amount) * blurred
