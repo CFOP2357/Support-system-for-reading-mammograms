@@ -24,10 +24,17 @@ def pixel_array_to_gray(pixel_array):
     max_val = np.amax(pixel_array)
     pixel_array *= 255
     pixel_array /= max_val
-    return pixel_array
+    return pixel_array.astype("uint8")
+
+def apply_clahe(img):
+    """Apply CLAHE filter using GPU"""
+    img_umat = cv.UMat(img)  # send img to gpu
+    clahe = cv.createCLAHE()  # crete clahe parameters
+    img_umat = clahe.apply(img_umat)  # Apply clahe to img on gpu
+    return img_umat.get()  # recover img from gpu
 
 def dcm_to_PIL_image_gray(fpath):
     """Read a DICOM file and return it as a gray scale PIL image"""
     ds = dcmread(fpath)
-    img = unsharp_mask(pixel_array_to_gray(np.float32(ds.pixel_array)))
-    return Image.fromarray(img)  # Aun se ve borroso
+    img_gray = pixel_array_to_gray(ds.pixel_array)
+    return Image.fromarray(apply_clahe(img_gray))
