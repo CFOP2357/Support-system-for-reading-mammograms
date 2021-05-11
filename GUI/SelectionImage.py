@@ -9,17 +9,31 @@ class SelectionImage:
 	width = 1
 	height = 1
 
-	def __init__(self, root, width, height):
+	def __init__(self, root, width, height, displayer, row=1, column=0):
 		self.root = root
 		self.selection_side = Canvas(root, width=305, height=505)
-		self.selection_side.grid(row=1, column=0)
+		self.selection_side.grid(row=row, column=column)
 		self.selection_side.bind("<Button-1>", self.clik)
 		self.width = width
 		self.height = height
+		self.displayer = displayer
+		self.width_right_image = displayer.width
+		self.height_right_image = displayer.height
 
 	def clik(self, event):
 		self.update_rectangle(event.x, event.y)
-	    #show(event.x, event.y)
+		self.set_segment_position(event.x, event.y)
+
+	def set_segment_position(self, x, y):
+		coord = [
+		    max([0, int(float(self.original_image.size[0] * x) / float(self.current_image.width())) - self.width_right_image / 2]),
+		    max([0, int(float(self.original_image.size[1] * y) / float(self.current_image.height())) - self.height_right_image / 2]),
+		    min([self.original_image.size[0],
+		         int(float(self.original_image.size[0] * x) / float(self.current_image.width())) + self.width_right_image / 2]),
+		    min([self.original_image.size[1],
+		         int(float(self.original_image.size[1] * y) / float(self.current_image.height())) + self.height_right_image / 2])
+		]
+		self.displayer.change_segment(coord)
 
 	def update_rectangle(self, x, y):
 		"""change rectangle´s position to {x, y} """
