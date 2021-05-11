@@ -1,7 +1,7 @@
 from pydicom import dcmread
 import cv2 as cv
 import numpy as np
-from PIL import ImageTk, Image
+from PIL import Image
 
 def unsharp_mask(image, kernel_size=(5, 5), sigma=10000.0, amount=100.0, threshold=10000.0):
     """Return a sharpened version of the image, using an unsharp mask."""

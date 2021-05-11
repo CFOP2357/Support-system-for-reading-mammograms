@@ -1,22 +1,12 @@
-__author__ = "Hernandez Hernandez Bernado and Salazar Alanis Victor Yoguel"
-# __copyright__ = ""
-__credits__ = ["Hernandez Hernandez Bernado", "Salazar Alanis Victor Yoguel"]
-# __license__ = "GPL"
-# __version__ = "0.0.1"
-__date__ = "2021-03-15"
-__status__ = "Production"
-
-# Built-in packages
-import os
-
-# Third party packages
 from tkinter import *
 from tkinter import filedialog
 from PIL import ImageTk, Image
 
-from ImageUI import *
-from SelectionImage import *
+import DicomIMG
 
+# Const
+width_right_image = 1200
+height_right_image = 750
 
 def open_mini_image(img):
     """open and resize img of the left"""
@@ -68,45 +58,10 @@ def show(x, y):
     leftSide.create_rectangle(x - xsize / 2, y - ysize / 2, x + xsize / 2, y + ysize / 2, outline="#05f",
                               tag="rectangle")
 
+
 def open_image(fpath):
     """open an image"""
     global originalImg
     originalImg = DicomIMG.dcm_to_PIL_image_gray(fpath)
     open_mini_image(originalImg)
     show(float(34), float(28))
-
-def click_on_open():
-    """Select a DICOM file and show it on screen using the PIL packege"""
-    global root
-    global originalImg
-    # Open image
-    root.filename = filedialog.askopenfilename(title="Selecciona un archivo", filetypes=(("DICOM", "*.dcm"), ("", "")))
-    #open_image(root.filename)
-
-
-def fullscreen():
-  """screen in full size"""
-  #getting screen width and height of display
-  width= root.winfo_screenwidth() 
-  height= root.winfo_screenheight()
-  #setting tkinter window size
-  root.geometry("%dx%d" % (width, height))
-
-if __name__ == "__main__":
-    # Init window
-    root = Tk()
-    root.title("visualización de mamografias")
-    fullscreen()
-    # Add Buttons
-    open_button = Button(root, text="Abrir", command=click_on_open)
-    open_button.grid(row=0, column=0)
-    # Init img
-    selection_image = SelectionImage(root, width = 305, height = 505)
-
-
-    #zoomImg = Label(root, image=leftImg)
-    #zoomImg.grid(row=1, column=2)
-    #open_image('example.dcm')
-
-    # Start window
-    root.mainloop()
