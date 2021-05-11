@@ -48,6 +48,4 @@ if __name__ == "__main__":
     image_displayer = ImageDisplayer(root, width=1200, height=750)
     selection_image = SelectionImage(root, width = 305, height = 505, displayer = image_displayer)
     open_image('example.dcm')
-
-    # Start window
     root.mainloop()

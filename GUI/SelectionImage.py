@@ -21,19 +21,24 @@ class SelectionImage:
 		self.height_right_image = displayer.height
 
 	def clik(self, event):
+		"""click on one area of the selection image"""
 		self.update_rectangle(event.x, event.y)
 		self.set_segment_position(event.x, event.y)
 
 	def set_segment_position(self, x, y):
+		"""get te segment with center on {x, y}(if possible) and update display"""
+		x = max(x, self.width / 2)
+		y = max(y, self.height / 2)
+		x = min(x, self.current_image.width() - self.width / 2)
+		y = min(y, self.current_image.height() - self.height / 2)
 		coord = [
-		    max([0, int(float(self.original_image.size[0] * x) / float(self.current_image.width())) - self.width_right_image / 2]),
-		    max([0, int(float(self.original_image.size[1] * y) / float(self.current_image.height())) - self.height_right_image / 2]),
-		    min([self.original_image.size[0],
-		         int(float(self.original_image.size[0] * x) / float(self.current_image.width())) + self.width_right_image / 2]),
-		    min([self.original_image.size[1],
-		         int(float(self.original_image.size[1] * y) / float(self.current_image.height())) + self.height_right_image / 2])
+		    int(float(self.original_image.size[0] * x) / float(self.current_image.width())) - self.width_right_image / 2,
+		    int(float(self.original_image.size[1] * y) / float(self.current_image.height())) - self.height_right_image / 2,
+		    int(float(self.original_image.size[0] * x) / float(self.current_image.width())) + self.width_right_image / 2,
+		    int(float(self.original_image.size[1] * y) / float(self.current_image.height())) + self.height_right_image / 2
 		]
 		self.displayer.change_segment(coord)
+		self.update_rectangle(x, y)
 
 	def update_rectangle(self, x, y):
 		"""change rectangle´s position to {x, y} """
@@ -42,10 +47,6 @@ class SelectionImage:
 		self.width = self.width/float(self.original_image.size[0])
 		self.height = float(self.height_right_image * self.current_image.height()) 
 		self.height = self.height/float(self.original_image.size[1])
-		x = max(x, self.width / 2)
-		y = max(y, self.height / 2)
-		x = min(x, self.current_image.width() - self.width / 2)
-		y = min(y, self.current_image.height() - self.height / 2)
 		self.selection_side.create_rectangle(
     		x - self.width / 2, y - self.height / 2, 
     		x + self.width / 2, y + self.height / 2,
@@ -72,6 +73,5 @@ class SelectionImage:
 		self.current_image = self.adjust_image(self.original_image)
 		self.current_image = ImageTk.PhotoImage(self.current_image)
 		self.selection_side.create_image(0, 0, anchor=NW, image=self.current_image, tag="img")
-		self.update_rectangle(0, 0)
 
 		

@@ -11,6 +11,7 @@ class ImageDisplayer:
 		self.label.grid(row=row, column=column)
 
 	def set_image(self, img):
+		"""update image"""
 		self.current_image = img
 
 	def change_segment(self, to_select):
@@ -20,4 +21,5 @@ class ImageDisplayer:
 		self.show()
 
 	def show(self):
+		"""show the segment image"""
 		self.label.configure(image=self.current_segment)
