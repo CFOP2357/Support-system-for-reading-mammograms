@@ -52,7 +52,7 @@ class SelectionImage:
     		x + self.width / 2, y + self.height / 2,
     		outline="#05f", tag="rectangle")
 
-	def adjust_image(self, img):
+	def adjust_image_size(self, img):
 		"""open and resize img of the left"""
 		if img.size[0] > 500:  # adjust height
 		    fixed_height = float(500)
@@ -70,7 +70,7 @@ class SelectionImage:
 		"""set an image"""
 		self.selection_side.delete("img")
 		self.original_image = image
-		self.current_image = self.adjust_image(self.original_image)
+		self.current_image = self.adjust_image_size(self.original_image)
 		self.current_image = ImageTk.PhotoImage(self.current_image)
 		self.selection_side.create_image(0, 0, anchor=NW, image=self.current_image, tag="img")
 
