@@ -4,15 +4,10 @@ from PIL import ImageTk, Image
 
 class SelectionImage:
 	"""SelectionImage selects a rectangular segment from an image"""
-	current_image = Image.open("emptyIMG.jpg")
 	width_right_image = 1200
 	height_right_image = 750
 	width = 1
 	height = 1
-
-	def clik(event):
-		update_rectangle(event.x, event.y)
-	    #show(event.x, event.y)
 
 	def __init__(self, root, width, height):
 		self.root = root
@@ -22,40 +17,47 @@ class SelectionImage:
 		self.width = width
 		self.height = height
 
+	def clik(self, event):
+		self.update_rectangle(event.x, event.y)
+	    #show(event.x, event.y)
+
 	def update_rectangle(self, x, y):
 		"""change rectangle´s position to {x, y} """
 		self.selection_side.delete("rectangle")
-		width = float(width_right_image * current_image.width()) 
-		width = width/float(originalImg.size[0])
-		height = float(height_right_image * current_image.height()) 
-		height = height/float(originalImg.size[1])
-		x = max(x, width / 2)
-		y = max(y, height / 2)
-		x = min(x, current_image.width() - width / 2)
-		y = min(y, current_image.height() - height / 2)
+		self.width = float(self.width_right_image * self.current_image.width()) 
+		self.width = self.width/float(self.original_image.size[0])
+		self.height = float(self.height_right_image * self.current_image.height()) 
+		self.height = self.height/float(self.original_image.size[1])
+		x = max(x, self.width / 2)
+		y = max(y, self.height / 2)
+		x = min(x, self.current_image.width() - self.width / 2)
+		y = min(y, self.current_image.height() - self.height / 2)
 		self.selection_side.create_rectangle(
-    		x - width / 2, y - height / 2, 
-    		x + width / 2, y + height / 2, 
+    		x - self.width / 2, y - self.height / 2, 
+    		x + self.width / 2, y + self.height / 2,
     		outline="#05f", tag="rectangle")
 
-	def adjust_image(self):
-	    """open and resize img of the left"""
-	    if current_image.size[0] > 500:  # adjust height
-	        fixed_height = float(500)
-	        height_percent = (fixed_height / float(current_image.size[1]))
-	        width_size = int((float(current_image.size[0]) * float(height_percent)))
-	        current_image = current_image.resize((int(width_size), int(fixed_height)))
-	    if current_image.size[1] > 300:  # adjust width
-	        fixed_width = float(300)
-	        width_percent = (fixed_width / float(current_image.size[0]))
-	        height_size = int((float(current_image.size[1]) * float(width_percent)))
-	        current_image = current_image.resize((int(fixed_width), int(height_size)))
+	def adjust_image(self, img):
+		"""open and resize img of the left"""
+		if img.size[0] > 500:  # adjust height
+		    fixed_height = float(500)
+		    height_percent = (fixed_height / float(img.size[1]))
+		    width_size = int((float(img.size[0]) * float(height_percent)))
+		    img = img.resize((int(width_size), int(fixed_height)))
+		if img.size[1] > 300:  # adjust width
+		    fixed_width = float(300)
+		    width_percent = (fixed_width / float(img.size[0]))
+		    height_size = int((float(img.size[1]) * float(width_percent)))
+		    img = img.resize((int(fixed_width), int(height_size)))
+		return img
 
 	def set_image(self, image):
 		"""set an image"""
 		self.selection_side.delete("img")
-		current_image = image
-		self.adjust_image()
-		self.selection_side.create_image(0, 0, anchor=NW, image=ImageTk.PhotoImage(current_image), tag="img")
+		self.original_image = image
+		self.current_image = self.adjust_image(self.original_image)
+		self.current_image = ImageTk.PhotoImage(self.current_image)
+		self.selection_side.create_image(0, 0, anchor=NW, image=self.current_image, tag="img")
+		self.update_rectangle(0, 0)
 
 		

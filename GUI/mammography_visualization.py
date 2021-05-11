@@ -71,9 +71,11 @@ def show(x, y):
 def open_image(fpath):
     """open an image"""
     global originalImg
+    global selection_image
     originalImg = DicomIMG.dcm_to_PIL_image_gray(fpath)
-    open_mini_image(originalImg)
-    show(float(34), float(28))
+    selection_image.set_image(originalImg);
+    #open_mini_image(originalImg)
+    #show(float(34), float(28))
 
 def click_on_open():
     """Select a DICOM file and show it on screen using the PIL packege"""
@@ -81,7 +83,7 @@ def click_on_open():
     global originalImg
     # Open image
     root.filename = filedialog.askopenfilename(title="Selecciona un archivo", filetypes=(("DICOM", "*.dcm"), ("", "")))
-    #open_image(root.filename)
+    open_image(root.filename)
 
 
 def fullscreen():
@@ -93,17 +95,12 @@ def fullscreen():
   root.geometry("%dx%d" % (width, height))
 
 if __name__ == "__main__":
-    # Init window
     root = Tk()
     root.title("visualización de mamografias")
     fullscreen()
-    # Add Buttons
     open_button = Button(root, text="Abrir", command=click_on_open)
     open_button.grid(row=0, column=0)
-    # Init img
     selection_image = SelectionImage(root, width = 305, height = 505)
-
-
     #zoomImg = Label(root, image=leftImg)
     #zoomImg.grid(row=1, column=2)
     #open_image('example.dcm')
