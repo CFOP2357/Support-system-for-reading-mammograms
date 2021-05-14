@@ -12,7 +12,6 @@ import os
 # Third party packages
 from tkinter import *
 from tkinter import filedialog
-from PIL import ImageTk, Image
 
 import DicomIMG
 from SelectionImage import *
