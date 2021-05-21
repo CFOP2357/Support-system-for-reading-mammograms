@@ -32,6 +32,7 @@ class SelectionImage:
         if [x, y] == [-1, -1]:
         	[x, y] = [self.x, self.y]
         [self.x, self.y] = [x, y]
+        print(self.width, self.height, self.current_image.width(), self.current_image.height())
         x = max(x, self.width / 2)
         y = max(y, self.height / 2)
         x = min(x, self.current_image.width() - self.width / 2)
@@ -48,10 +49,6 @@ class SelectionImage:
         ]
         self.displayer.segment = coord
         self.update_rectangle(x, y)
-
-    #def set_segment_position(self):
-    	#"""set segment position with current values"""
-    	#self.set_segment_position(self.x, self.y)
 
     def update_rectangle(self, x, y):
         """change rectangle´s position to {x, y} """
