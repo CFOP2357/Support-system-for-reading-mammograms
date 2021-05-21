@@ -52,5 +52,7 @@ def apply_clahe(img):
 def dcm_to_pil_image_gray(file_path):
     """Read a DICOM file and return it as a gray scale PIL image"""
     ds = dcmread(file_path)
-    img = Image.fromarray(apply_clahe(ds.pixel_array).astype("uint8"))
-    return img
+    img_filtered = Image.fromarray(apply_clahe(ds.pixel_array).astype("uint8"))
+    img = cv.normalize(ds.pixel_array, None, alpha=0, beta=255, norm_type=cv.NORM_MINMAX, dtype=cv.CV_8U)
+    img = Image.fromarray(img.astype("uint8"))
+    return [img, img_filtered]
