@@ -3,6 +3,7 @@ import cv2 as cv
 import numpy as np
 from PIL import Image
 
+
 def unsharp_mask(image, kernel_size=(5, 5), sigma=10000.0, amount=100.0, threshold=10000.0):
     """Return a sharpened version of the image, using an unsharp mask."""
     blurred = cv.GaussianBlur(image, kernel_size, sigma)
@@ -15,6 +16,7 @@ def unsharp_mask(image, kernel_size=(5, 5), sigma=10000.0, amount=100.0, thresho
     sharpened = sharpened.round().astype(np.uint8)
     return sharpened
 
+
 def pixel_array_to_gray(pixel_array):
     """Return a uint8 pixel array representation of
     the original pixel array with values from 0 to 255
@@ -26,6 +28,7 @@ def pixel_array_to_gray(pixel_array):
     pixel_array /= max_val
     return pixel_array.astype("uint8")
 
+
 def apply_clahe(img):
     """Apply CLAHE filter using GPU"""
     img_umat = cv.UMat(img)  # send img to gpu
@@ -33,8 +36,9 @@ def apply_clahe(img):
     img_umat = clahe.apply(img_umat)  # Apply clahe to img on gpu
     return img_umat.get()  # recover img from gpu
 
-def dcm_to_PIL_image_gray(fpath):
+
+def dcm_to_pil_image_gray(file_path):
     """Read a DICOM file and return it as a gray scale PIL image"""
-    ds = dcmread(fpath)
+    ds = dcmread(file_path)
     img_gray = pixel_array_to_gray(ds.pixel_array)
     return Image.fromarray(apply_clahe(img_gray))

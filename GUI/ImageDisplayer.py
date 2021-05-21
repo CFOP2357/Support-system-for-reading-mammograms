@@ -1,22 +1,32 @@
+import tkinter
 from tkinter import *
 from tkinter import filedialog
 from PIL import ImageTk, Image
+import typing
+
 
 class ImageDisplayer:
-	"""displayer of a segment of an image"""
-	def __init__(self, root, width, height, row=1, column=2):
+	"""Display a segment of an image"""
+	def __init__(self, root: tkinter.Tk, width: int, height: int, row: int = 1, column: int = 2):
 		self.width = width
 		self.height = height
-		self.label = Label(root);
+		self.label = Label(root)
 		self.label.grid(row=row, column=column)
+		self.current_image = None
+		self.current_segment = None
 
-	def set_image(self, img):
-		"""update image"""
+	@property
+	def image(self):
+		return self.current_image
+
+	@image.setter
+	def image(self, img):
+		"""Update image"""
 		self.current_image = img
 
 	def change_segment(self, to_select):
-		"""change the segment of current_image wich is going to be show"""
-		self.current_segment = self.current_image.crop(to_select)
+		"""change the segment of image wich is going to be show"""
+		self.current_segment = self.image.crop(to_select)
 		self.current_segment = ImageTk.PhotoImage(self.current_segment)
 		self.show()
 
