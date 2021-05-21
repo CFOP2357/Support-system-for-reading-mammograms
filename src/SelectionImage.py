@@ -20,7 +20,7 @@ class SelectionImage:
         self.displayer = displayer
         self.width_right_image = displayer.width
         self.height_right_image = displayer.height
-        [self.x, self.y] = [0, 0]
+        [self.x, self.y] = [width/2, height/2]
 
     def click(self, event):
         """click on one area of the selection image"""

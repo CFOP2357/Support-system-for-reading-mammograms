@@ -81,7 +81,8 @@ if __name__ == "__main__":
     filter_button_text.set("Filtrar")
     image_displayer = ImageDisplayer(root, width=1200, height=750)
     selection_image = SelectionImage(root, width=305, height=505, displayer=image_displayer)
-    #oppening only once at the begining put the rectangle on a "random position" i dont know why, is a bugg
+    #oppening only once at the begining put the rectangle on a "random position". thats why i call open two times
+    #in some place i am showing the rectangle before inicialization
     open_image('example.dcm')
     open_image('example.dcm')
     root.mainloop()
