@@ -2,6 +2,7 @@ from pydicom import dcmread
 import cv2 as cv
 import numpy as np
 from PIL import Image
+import timeit
 
 
 def unsharp_mask(image, kernel_size=(5, 5), sigma=10000.0, amount=100.0, threshold=10000.0):
@@ -32,13 +33,14 @@ def pixel_array_to_gray(pixel_array):
 def apply_clahe(img):
     """Apply CLAHE filter using GPU"""
     img_umat = cv.UMat(img)  # send img to gpu
+    # Normalize image [0, 255]
+    img_umat = cv.UMat(cv.normalize(img_umat, None, alpha=0, beta=255, norm_type=cv.NORM_MINMAX, dtype=cv.CV_8U))
     clahe = cv.createCLAHE()  # crete clahe parameters
-    img_umat = clahe.apply(img_umat)  # Apply clahe to img on gpu
-    return img_umat.get()  # recover img from gpu
+    return clahe.apply(img_umat).get()  # recover img from gpu
 
 
 def dcm_to_pil_image_gray(file_path):
     """Read a DICOM file and return it as a gray scale PIL image"""
     ds = dcmread(file_path)
-    img_gray = pixel_array_to_gray(ds.pixel_array)
-    return Image.fromarray(apply_clahe(img_gray))
+    img = Image.fromarray(apply_clahe(ds.pixel_array))
+    return img

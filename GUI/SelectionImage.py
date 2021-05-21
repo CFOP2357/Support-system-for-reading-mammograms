@@ -10,18 +10,18 @@ class SelectionImage:
     width = 1
     height = 1
 
-    def __init__(self, root, width, height, displayer, row=1, column=0):
+    def __init__(self, root, width, height, displayer, row: int=1, column: int=0):
         self.root = root
         self.selection_side = Canvas(root, width=305, height=505)
         self.selection_side.grid(row=row, column=column)
-        self.selection_side.bind("<Button-1>", self.clik)
+        self.selection_side.bind("<Button-1>", self.click)
         self.width = width
         self.height = height
         self.displayer = displayer
         self.width_right_image = displayer.width
         self.height_right_image = displayer.height
 
-    def clik(self, event):
+    def click(self, event):
         """click on one area of the selection image"""
         self.update_rectangle(event.x, event.y)
         self.set_segment_position(event.x, event.y)
@@ -42,7 +42,7 @@ class SelectionImage:
             int(float(self.original_image.size[1] * y) / float(
                 self.current_image.height())) + self.height_right_image / 2
         ]
-        self.displayer.change_segment(coord)
+        self.displayer.segment = coord
         self.update_rectangle(x, y)
 
     def update_rectangle(self, x, y):
