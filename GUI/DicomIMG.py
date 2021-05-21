@@ -33,25 +33,24 @@ def pixel_array_to_gray(pixel_array):
 def apply_clahe(img):
     """Apply CLAHE filter using GPU"""
 
-    start = timeit.default_timer()
-    img_umat = cv.UMat(img)  # send img to gpu
-    end = timeit.default_timer()
-    print(end - start)
-    # Normalize image [0, 255]
-    img_umat = cv.normalize(img_umat, None, alpha=0, beta=255, norm_type=cv.NORM_MINMAX, dtype=cv.CV_8U)
     clahe = cv.createCLAHE()  # crete clahe parameters
+
+    img_umat = cv.UMat(img)  # send img to gpu
+
+    start = timeit.default_timer()
 
     img_umat = clahe.apply(img_umat)
 
-    start = timeit.default_timer()
-    img_umat.get()
+    # Normalize image [0, 255]
+    img_umat = cv.normalize(img_umat, None, alpha=0, beta=255, norm_type=cv.NORM_MINMAX, dtype=cv.CV_8U)
+
     end = timeit.default_timer()
     print(end - start)
-    return img_umat.get()# recover img from gpu
+    return img_umat.get()  # recover img from gpu
 
 
 def dcm_to_pil_image_gray(file_path):
     """Read a DICOM file and return it as a gray scale PIL image"""
     ds = dcmread(file_path)
-    img = Image.fromarray(apply_clahe(ds.pixel_array))
+    img = Image.fromarray(apply_clahe(ds.pixel_array).astype("uint8"))
     return img
