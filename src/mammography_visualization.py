@@ -1,11 +1,8 @@
 __author__ = "Hernandez Hernandez Bernado and Salazar Alanis Victor Yoguel"
-# __copyright__ = ""
+ __copyright__ = "2021, Universidad Autonoma de San Luis Potosi"
 __credits__ = ["Hernandez Hernandez Bernado", "Salazar Alanis Victor Yoguel"]
-# __license__ = "GPL"
-# __version__ = "0.0.1"
-__date__ = "2021-03-15"
-__status__ = "Production"
-
+ __license__ = "MIT"
+__version__ = "1.0.0"
 # Built-in packages
 import os
 
@@ -21,6 +18,7 @@ from ImageDisplayer import *
 is_filtered = False
 
 def update_image_filter():
+    """update the image wich is currently showing (to filtered_image or not)"""
     if is_filtered:
         global filtered_image
         selection_image.set_image(filtered_image)
@@ -32,6 +30,7 @@ def update_image_filter():
     selection_image.set_segment_position()
 
 def click_on_filter():
+    """clic on the botton to change the filter (show clahe or original)"""
     global filter_button_text
     global is_filtered
     if is_filtered:
