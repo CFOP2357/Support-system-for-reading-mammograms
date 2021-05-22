@@ -37,15 +37,11 @@ def apply_clahe(img):
 
     img_umat = cv.UMat(img)  # send img to gpu
 
-    start = timeit.default_timer()
-
     img_umat = clahe.apply(img_umat)
 
     # Normalize image [0, 255]
     img_umat = cv.normalize(img_umat, None, alpha=0, beta=255, norm_type=cv.NORM_MINMAX, dtype=cv.CV_8U)
 
-    end = timeit.default_timer()
-    print(end - start)
     return img_umat.get()  # recover img from gpu
 
 

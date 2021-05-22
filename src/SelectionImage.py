@@ -32,7 +32,6 @@ class SelectionImage:
         if [x, y] == [-1, -1]:
         	[x, y] = [self.x, self.y]
         [self.x, self.y] = [x, y]
-        print(self.width, self.height, self.current_image.width(), self.current_image.height())
         x = max(x, self.width / 2)
         y = max(y, self.height / 2)
         x = min(x, self.current_image.width() - self.width / 2)
