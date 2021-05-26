@@ -17,7 +17,8 @@ from ImageDisplayer import *
 
 is_filtered = False
 
-def update_image_filter():
+
+def update_image_filter() -> None:
     """update the image wich is currently showing (to filtered_image or not)"""
     if is_filtered:
         global filtered_image
@@ -29,7 +30,8 @@ def update_image_filter():
         image_displayer.image = original_image
     selection_image.set_segment_position()
 
-def click_on_filter():
+
+def click_on_filter() -> None:
     """clic on the botton to change the filter (show clahe or original)"""
     global filter_button_text
     global is_filtered
@@ -41,7 +43,8 @@ def click_on_filter():
         filter_button_text.set("Mostrar Original");
     update_image_filter()
 
-def open_image(file_path):
+
+def open_image(file_path) -> None:
     """open an image"""
     global selection_image
     global image_displayer
@@ -54,14 +57,14 @@ def open_image(file_path):
     update_image_filter()
 
 
-def click_on_open():
+def click_on_open() -> None:
     """Select a DICOM file and show it on screen using the PIL packege"""
     global root
     root.filename = filedialog.askopenfilename(title="Selecciona un archivo", filetypes=(("DICOM", "*.dcm"), ("", "")))
     open_image(root.filename)
 
 
-def fullscreen():
+def fullscreen() -> None:
     """screen in full size"""
     width = root.winfo_screenwidth()
     height = root.winfo_screenheight()
