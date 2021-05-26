@@ -1,6 +1,8 @@
 from tkinter import *
 from tkinter import filedialog
 from PIL import ImageTk, Image
+from type_definitions import *
+from ImageDisplayer import ImageDisplayer
 
 
 class SelectionImage:
@@ -10,27 +12,28 @@ class SelectionImage:
     width = 1
     height = 1
 
-    def __init__(self, root, width, height, displayer, row: int=1, column: int=0):
+    def __init__(self, root: tkinter.Tk, width: int, height: int, displayer: ImageDisplayer, row: int = 1,
+                 column: int = 0) -> None:
         self.root = root
         self.selection_side = Canvas(root, width=305, height=505)
-        self.selection_side.grid(row=row, column=column)
-        self.selection_side.bind("<Button-1>", self.click)
+        self.selection_side.grid(row=row, column=column)  # Set selection position
+        self.selection_side.bind("<Button-1>", self.click)  # Activate interaction
         self.width = width
         self.height = height
         self.displayer = displayer
         self.width_right_image = displayer.width
         self.height_right_image = displayer.height
-        [self.x, self.y] = [width/2, height/2]
+        [self.x, self.y] = [width / 2, height / 2]
 
-    def click(self, event):
+    def click(self, event) -> None:
         """click on one area of the selection image"""
-        self.update_rectangle(event.x, event.y)
+        self.update_rectangle(event.x, event.y)  # Rectangle defining the area of visualization
         self.set_segment_position(event.x, event.y)
 
-    def set_segment_position(self, x=-1, y=-1):
+    def set_segment_position(self, x: int = -1, y: int = -1) -> None:
         """get te segment with center on {x, y}(if possible) and update display"""
         if [x, y] == [-1, -1]:
-        	[x, y] = [self.x, self.y]
+            [x, y] = [self.x, self.y]
         [self.x, self.y] = [x, y]
         x = max(x, self.width / 2)
         y = max(y, self.height / 2)
@@ -49,7 +52,7 @@ class SelectionImage:
         self.displayer.segment = coord
         self.update_rectangle(x, y)
 
-    def update_rectangle(self, x, y):
+    def update_rectangle(self, x: int, y: int) -> None:
         """change rectangle´s position to {x, y} """
         self.selection_side.delete("rectangle")
         self.width = float(self.width_right_image * self.current_image.width())
@@ -61,7 +64,8 @@ class SelectionImage:
             x + self.width / 2, y + self.height / 2,
             outline="#05f", tag="rectangle")
 
-    def adjust_image_size(self, img):
+    @staticmethod
+    def adjust_image_size(img: PilImage) -> PilImage:
         """open and resize img of the left"""
         if img.size[0] > 500:  # adjust height
             fixed_height = float(500)
@@ -73,9 +77,10 @@ class SelectionImage:
             width_percent = (fixed_width / float(img.size[0]))
             height_size = int((float(img.size[1]) * float(width_percent)))
             img = img.resize((int(fixed_width), int(height_size)))
+
         return img
 
-    def set_image(self, image):
+    def set_image(self, image: PilImage) -> None:
         """set an image"""
         self.selection_side.delete("img")
         self.original_image = image
