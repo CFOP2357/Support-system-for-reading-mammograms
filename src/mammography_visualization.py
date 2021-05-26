@@ -3,15 +3,12 @@ __copyright__ = "2021, Universidad Autonoma de San Luis Potosi"
 __credits__ = ["Hernandez Hernandez Bernado", "Salazar Alanis Victor Yoguel"]
 __license__ = "MIT"
 __version__ = "1.0.0"
-# Built-in packages
-import os
 
 # Third party packages
-import tkinter
-from tkinter import *
 from tkinter import filedialog
-
 import DicomIMG
+
+# Project packages
 from SelectionImage import *
 from ImageDisplayer import *
 
@@ -40,7 +37,7 @@ def click_on_filter() -> None:
         filter_button_text.set("Filtrar")
     else:
         is_filtered = True
-        filter_button_text.set("Mostrar Original");
+        filter_button_text.set("Mostrar Original")
     update_image_filter()
 
 
@@ -83,7 +80,7 @@ if __name__ == "__main__":
     open_button.grid(row=0, column=0)
 
     # Construct open file button
-    filter_button_text = tkinter.StringVar();
+    filter_button_text = tkinter.StringVar()
     filter_button = Button(root, textvariable=filter_button_text, command=click_on_filter)
     filter_button.grid(row=0, column=2)
     filter_button_text.set("Filtrar")

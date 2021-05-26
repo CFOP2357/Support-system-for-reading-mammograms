@@ -1,3 +1,4 @@
+import tkinter
 from tkinter import *
 from PIL import ImageTk
 from type_definitions import *

@@ -2,7 +2,6 @@ from pydicom import dcmread
 import cv2 as cv
 import numpy as np
 from PIL import Image
-import timeit
 
 
 def unsharp_mask(image, kernel_size: tuple = (5, 5), sigma: float = 10000.0, amount: float = 100.0,
