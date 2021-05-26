@@ -1,7 +1,7 @@
 __author__ = "Hernandez Hernandez Bernado and Salazar Alanis Victor Yoguel"
- __copyright__ = "2021, Universidad Autonoma de San Luis Potosi"
+__copyright__ = "2021, Universidad Autonoma de San Luis Potosi"
 __credits__ = ["Hernandez Hernandez Bernado", "Salazar Alanis Victor Yoguel"]
- __license__ = "MIT"
+__license__ = "MIT"
 __version__ = "1.0.0"
 # Built-in packages
 import os
@@ -72,20 +72,32 @@ def fullscreen() -> None:
 
 
 if __name__ == "__main__":
+
+    # Initilizate GUI
     root = tkinter.Tk()
     root.title("Visualización de mamografias")
     fullscreen()
+
+    # Construct open file button
     open_button = Button(root, text="Abrir", command=click_on_open)
     open_button.grid(row=0, column=0)
+
+    # Construct open file button
     filter_button_text = tkinter.StringVar();
     filter_button = Button(root, textvariable=filter_button_text, command=click_on_filter)
     filter_button.grid(row=0, column=2)
     filter_button_text.set("Filtrar")
+
+    # Create zoom display
     image_displayer = ImageDisplayer(root, width=1200, height=750)
+
+    # Create selection interface
     selection_image = SelectionImage(root, width=305, height=505, displayer=image_displayer)
-    #calling open_image('example.dcm') only once at the begining put the rectangle on a "random position". 
-    #thats why i call selection_image.set_segment_position() after open_image
-    #in some place i am showing the rectangle before inicialization, this is a bug
+
+    # Calling open_image('example.dcm') only once at the begining put the rectangle on a "random position".
+    # that is why i call selection_image.set_segment_position() after open_image
+    # in some place i am showing the rectangle before inicialization, this is a bug
     open_image('example.dcm')
     selection_image.set_segment_position()
+
     root.mainloop()
