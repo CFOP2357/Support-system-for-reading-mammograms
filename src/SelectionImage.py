@@ -1,6 +1,5 @@
 from tkinter import *
-from tkinter import filedialog
-from PIL import ImageTk, Image
+from PIL import ImageTk
 from type_definitions import *
 from ImageDisplayer import ImageDisplayer
 
@@ -20,25 +19,32 @@ class SelectionImage:
         self.selection_side.bind("<Button-1>", self.click)  # Activate interaction
         self.width = width
         self.height = height
+        self.original_image = None
+        self.current_image = None
+        [self.x, self.y] = [width / 2, height / 2]
+        # Displayer variables
         self.displayer = displayer
         self.width_right_image = displayer.width
         self.height_right_image = displayer.height
-        [self.x, self.y] = [width / 2, height / 2]
 
     def click(self, event) -> None:
         """click on one area of the selection image"""
         self.update_rectangle(event.x, event.y)  # Rectangle defining the area of visualization
-        self.set_segment_position(event.x, event.y)
+        self.set_segment_position(event.x, event.y)  # Display zoom of the area inside of the rectangle
 
     def set_segment_position(self, x: int = -1, y: int = -1) -> None:
         """get te segment with center on {x, y}(if possible) and update display"""
         if [x, y] == [-1, -1]:
             [x, y] = [self.x, self.y]
+
+        # Set center of the segment to the nearest valid coordinate to (x,y)
         [self.x, self.y] = [x, y]
         x = max(x, self.width / 2)
         y = max(y, self.height / 2)
         x = min(x, self.current_image.width() - self.width / 2)
         y = min(y, self.current_image.height() - self.height / 2)
+
+        # Get coordinates defining the area to display
         coord = [
             int(float(self.original_image.size[0] * x) / float(
                 self.current_image.width())) - self.width_right_image / 2,
